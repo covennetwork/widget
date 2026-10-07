@@ -1,6 +1,6 @@
 {
   "name": "@covennetwork/widget",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Embeddable Coven swap widget for React — a thin, dependency-free iframe wrapper.",
   "license": "MIT",
   "homepage": "https://coven.network",

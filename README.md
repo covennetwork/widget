@@ -63,10 +63,34 @@ Or name the pair explicitly, optionally with the full pool key to route through 
 | `hooks`         | `string`            | Pool hooks address (`0x0…0` for none).                      |
 | `slippage`      | `number`            | Max slippage in basis points (default `50`).                |
 | `bg`            | `string`            | Background color (hex, or `transparent`). Default `#EFECE4`. |
+| `theme`         | `"light" \| "dark"` | Ink palette. `dark` for dark hosts; defaults `bg` to `#0E0E0D`. |
+| `accent`        | `string`            | Hex color for the primary action.                            |
+| `compact`       | `boolean`           | Tighter spacing, smaller headings, no hero heading.          |
+| `onSwap`        | `(swap) => void`    | Called when a swap confirms. See [Swap events](#swap-events). |
 | `maxWidth`      | `number \| string`  | Max iframe width (default `460`).                           |
 | `origin`        | `string`            | Where the widget is hosted (default `https://coven.network`). |
 | `className`     | `string`            | Passed to the iframe.                                       |
 | `style`         | `React.CSSProperties` | Merged onto the iframe.                                    |
+
+## Swap events
+
+When a swap made in the widget confirms, the widget posts a `coven:swap` message to the host
+window, and the React component passes the same payload (without `type`) to `onSwap`:
+
+```ts
+{
+  type: 'coven:swap',
+  hash: '0x…',                 // transaction hash on Arc
+  side: 'buy',                 // relative to USDC: 'buy' paid USDC, 'sell' received it, else 'swap'
+  tokenIn: { address: '0x…', symbol: 'USDC', decimals: 6 },
+  tokenOut: { address: '0x…', symbol: 'TOKEN', decimals: 18 },
+  amountIn: '1000000',         // base units, as a decimal string
+  amountOut: '4213370000000000000',
+}
+```
+
+Without React, listen for it next to the resize message, and check `event.source` is the widget's
+iframe before trusting it.
 
 ## License
 
